@@ -2,9 +2,9 @@ package main
 
 import (
 	"log"
-	"main/game"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/temidaradev/RpiZeroWEbiten/game"
 )
 
 func main() {
