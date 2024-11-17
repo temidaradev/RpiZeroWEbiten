@@ -18,6 +18,7 @@ require (
 	github.com/jezek/xgb v1.1.1 // indirect
 	github.com/setanarut/kamera/v2 v2.8.1
 	github.com/temidaradev/esset v1.5.0
-	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f
+	golang.org/x/sync v0.9.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
 )
