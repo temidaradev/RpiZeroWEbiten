@@ -3,6 +3,7 @@ package game
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/temidaradev/RpiZeroWEbiten/assets"
+	"golang.org/x/exp/constraints"
 )
 
 type Game struct {
@@ -23,9 +24,17 @@ func NewGame() *Game {
 	return g
 }
 
+var low float64 = 0
+var high float64 = 1500
+
 func (g *Game) Update() error {
+
 	g.player.Update()
 
+	camPosX := Clamp(g.player.X, low, high)
+	camPosY := Clamp(g.player.Y, low, high)
+
+	cam.LookAt(camPosX, camPosY)
 	return nil
 }
 
@@ -35,9 +44,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for i := 0; i < 100; i++ {
 		for j := 0; j < 100; j++ {
 			dio := &ebiten.DrawImageOptions{}
-			dio.GeoM.Translate(float64(i*100), float64(j*100))
+			dio.GeoM.Translate(float64(i*50), float64(j*50))
 			cam.Draw(assets.Tiles[1], dio, screen)
-			// screen.DrawImage(assets.Tiles[1], dio)
 		}
 	}
 
@@ -62,4 +70,15 @@ func Axis() (axisX, axisY float64) {
 		axisX += 1
 	}
 	return axisX, axisY
+}
+
+// Clamp returns v clamped to [low, high].
+func Clamp[T constraints.Ordered](v, low, high T) T {
+	if v < low {
+		return low
+	}
+	if v > high {
+		return high
+	}
+	return v
 }

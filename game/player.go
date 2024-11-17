@@ -56,9 +56,11 @@ func (p *Player) Update() error {
 	p.Y += y * p.speed
 
 	p.DIO.GeoM.Reset()
-	p.DIO.GeoM.Translate(p.X, p.Y)
 
-	cam.LookAt(p.X, p.Y)
+	p.DIO.GeoM.Translate(
+		p.X-float64(assets.GopherIdle.Bounds().Dx()/2),
+		p.Y-float64(assets.GopherIdle.Bounds().Dy()/2),
+	)
 	return nil
 }
 
