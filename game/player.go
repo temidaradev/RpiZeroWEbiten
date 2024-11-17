@@ -2,10 +2,8 @@ package game
 
 import (
 	"image/color"
-	"math/rand/v2"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 	"github.com/temidaradev/RpiZeroWEbiten/assets"
 )
@@ -46,75 +44,26 @@ import (
 
 type Player struct {
 	// player *Char
+	X, Y  float64
+	DIO   *ebiten.DrawImageOptions
+	speed float64
 }
 
 func (p *Player) Update() error {
-	cam.LookAt(targetX, targetY)
+	x, y := Axis()
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyL) {
-		cam.LerpEnabled = !cam.LerpEnabled
-	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyK) {
-		cam.ShakeEnabled = !cam.ShakeEnabled
-	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyT) {
-		cam.AddTrauma(1.0)
-	}
+	p.X += x * p.speed
+	p.Y += y * p.speed
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) {
-		cam.ZoomFactor *= 2
-	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) {
-		cam.ZoomFactor /= 2
-	}
+	p.DIO.GeoM.Reset()
+	p.DIO.GeoM.Translate(p.X, p.Y)
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyTab) {
-		targetX, targetY = rand.Float64()*w, rand.Float64()*h
-	}
-
-	if ebiten.IsKeyPressed(ebiten.KeyA) {
-		targetX -= camSpeed / cam.ZoomFactor
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyD) {
-		targetX += camSpeed / cam.ZoomFactor
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyW) {
-		targetY -= camSpeed / cam.ZoomFactor
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyS) {
-		targetY += camSpeed / cam.ZoomFactor
-	}
-
-	if ebiten.IsKeyPressed(ebiten.KeyQ) { // zoom out
-		cam.ZoomFactor /= zoomSpeedFactor
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyE) { // zoom in
-		cam.ZoomFactor *= zoomSpeedFactor
-	}
-
-	if ebiten.IsKeyPressed(ebiten.KeyR) {
-		cam.SetAngle(cam.Angle() + rotSpeed)
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyF) {
-		cam.SetAngle(cam.Angle() - rotSpeed)
-	}
-
-	if ebiten.IsKeyPressed(ebiten.KeyBackspace) {
-		targetX, targetY = w/2, h/2
-		cam.Reset()
-	}
+	cam.LookAt(p.X, p.Y)
 	return nil
 }
 
 func (p *Player) Draw(screen *ebiten.Image) {
-	s := assets.GopherIdle
-	// if p.player.vx > 0 {
-	// 	s = assets.GopherRight
-	// } else if p.player.vx < 0 {
-	// 	s = assets.GopherLeft
-	// }
-
-	cam.Draw(s, dio, screen)
+	cam.Draw(assets.GopherIdle, p.DIO, screen)
 
 	// Draw camera crosshair
 	cx, cy := float32(w/2), float32(h/2)
