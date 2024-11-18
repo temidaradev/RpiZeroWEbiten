@@ -2,8 +2,6 @@ package game
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/temidaradev/RpiZeroWEbiten/assets"
-	"golang.org/x/exp/constraints"
 )
 
 type Game struct {
@@ -39,46 +37,10 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-
-	// arka plan döşemeleri çiz
-	for i := 0; i < 100; i++ {
-		for j := 0; j < 100; j++ {
-			dio := &ebiten.DrawImageOptions{}
-			dio.GeoM.Translate(float64(i*50), float64(j*50))
-			cam.Draw(assets.Tiles[1], dio, screen)
-		}
-	}
-
+	MakeBackground(screen)
 	g.player.Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return outsideWidth, outsideHeight
-}
-
-func Axis() (axisX, axisY float64) {
-	if ebiten.IsKeyPressed(ebiten.KeyUp) {
-		axisY -= 1
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyDown) {
-		axisY += 1
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
-		axisX -= 1
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyRight) {
-		axisX += 1
-	}
-	return axisX, axisY
-}
-
-// Clamp returns v clamped to [low, high].
-func Clamp[T constraints.Ordered](v, low, high T) T {
-	if v < low {
-		return low
-	}
-	if v > high {
-		return high
-	}
-	return v
 }

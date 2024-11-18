@@ -1,9 +1,11 @@
 package game
 
 import (
+	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 	"github.com/temidaradev/RpiZeroWEbiten/assets"
 )
@@ -71,4 +73,7 @@ func (p *Player) Draw(screen *ebiten.Image) {
 	cx, cy := float32(w/2), float32(h/2)
 	vector.StrokeLine(screen, cx-10, cy, cx+10, cy, 1, color.White, true)
 	vector.StrokeLine(screen, cx, cy-10, cx, cy+10, 1, color.White, true)
+
+	ebitenutil.DebugPrintAt(screen, fmt.Sprintf("X: %+v", p.X), 5, 0)
+	ebitenutil.DebugPrintAt(screen, fmt.Sprintf("Y: %+v", p.Y), 5, 15)
 }
