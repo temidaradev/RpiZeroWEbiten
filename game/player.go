@@ -64,21 +64,9 @@ func (p *Player) Update() error {
 		p.Y-float64(assets.GopherIdle.Bounds().Dy()/2),
 	)
 
-	//sides
-	if p.X < -230 {
-		p.X = -230
-	}
-	if p.X > 1740 {
-		p.X = 1740
-	}
+	p.X = min(max(p.X, -230), 1740)
+	p.Y = min(max(p.Y, -120), 1610)
 
-	//corners
-	if p.Y < -120 {
-		p.Y = -120
-	}
-	if p.Y > 1610 {
-		p.Y = 1610
-	}
 	return nil
 }
 
