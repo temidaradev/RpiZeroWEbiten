@@ -11,7 +11,7 @@ func main() {
 	g := game.NewGame()
 
 	ebiten.SetWindowTitle("Game")
-	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
+	// ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
 	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
