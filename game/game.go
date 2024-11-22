@@ -1,7 +1,10 @@
 package game
 
 import (
+	"fmt"
+
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/temidaradev/RpiZeroWEbiten/assets"
 )
 
 type Game struct {
@@ -22,23 +25,28 @@ func NewGame() *Game {
 	return g
 }
 
-var low float64 = 0
-var high float64 = 1500
+var playerOffsetX = float64(assets.GopherIdle.Bounds().Dx() / 2)
+var playerOffsetY = float64(assets.GopherIdle.Bounds().Dy() / 2)
+
+func init() {
+	fmt.Println(playerOffsetX, playerOffsetY)
+}
+
+// var low float64 = 0
+// var high float64 = 1500
 
 func (g *Game) Update() error {
 
 	g.player.Update()
-
-	camPosX := Clamp(g.player.X, low, high)
-	camPosY := Clamp(g.player.Y, low, high)
-
-	cam.LookAt(camPosX, camPosY)
+	cam.LookAt(g.player.X, g.player.Y)
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	MakeBackground(screen)
-	g.player.Draw(screen)
+	g.player.DIO.GeoM.Translate(g.player.X-playerOffsetX, g.player.Y-playerOffsetY)
+	cam.Draw(assets.GopherIdle, g.player.DIO, screen)
+	g.player.DIO.GeoM.Reset()
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
