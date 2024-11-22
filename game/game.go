@@ -36,7 +36,6 @@ func init() {
 // var high float64 = 1500
 
 func (g *Game) Update() error {
-
 	g.player.Update()
 	cam.LookAt(g.player.X, g.player.Y)
 	return nil
