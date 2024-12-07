@@ -20,7 +20,7 @@ func NewGame() *Game {
 		X:     0,
 		Y:     0,
 		DIO:   &ebiten.DrawImageOptions{},
-		speed: 20,
+		speed: 10,
 	}
 	return g
 }
@@ -42,10 +42,7 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	MakeBackground(screen)
-	g.player.DIO.GeoM.Translate(g.player.X-playerOffsetX, g.player.Y-playerOffsetY)
-	cam.Draw(assets.GopherIdle, g.player.DIO, screen)
-	g.player.DIO.GeoM.Reset()
+	g.player.Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
